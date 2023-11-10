@@ -42,17 +42,16 @@ def pdf_url_list(df):
     return df.apply(get_pdf_url, axis=1).tolist()
 
 def download_pdf(url, folder_path="510k_pdfs"):
-    # list of URLs that do not exist
-    not_exist = []
-
+    # if file exists, skip
+    if os.path.exists(os.path.join(DATA_PATH, folder_path, url.split("/")[-1])):
+        return "File Exists"
     # Send a GET request to the URL
     response = requests.get(url)
     
     # Check response code
     if response.status_code != 200:
         if response.status_code == 404:
-            not_exist.append(url)
-            return None
+            return "Not Found"
         else:
             raise Exception(f"Status code: {response.status_code} | {url} is not valid.")
     
@@ -63,17 +62,25 @@ def download_pdf(url, folder_path="510k_pdfs"):
     with open(os.path.join(DATA_PATH, folder_path, filename), "wb") as f:
         f.write(response.content)
     
-    print(f"PDF file saved in {folder_path}/{filename}")
+    #print(f"PDF file saved in {folder_path}/{filename}")
 
 def download_all_pdfs(df):
     """
     This function downloads all the PDF files from the FDA website.
     """
+    # list of URLs that do not exist
+    not_exist = []
     urls = pdf_url_list(df)
-    for url in tqdm(urls):
+    for i, url in enumerate(tqdm(urls)):
         if url is not None:
-            download_pdf(url)   
+            result = download_pdf(url)
+            if result == "Not Found":
+                not_exist.append(url)
             sleep(0.5)
+        if i % 100 == 0:
+            with open(os.path.join(DATA_PATH, "not_exist.txt"), "w") as f:
+                f.write("\n".join(not_exist))
+
 
 if __name__ == "__main__":
     df = read_data()
