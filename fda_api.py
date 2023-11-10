@@ -47,7 +47,7 @@ def download_pdf(url, folder_path="510k_pdfs"):
     
     # Check response code
     if response.status_code != 200:
-        raise Exception(f"Status code: {response.status_code}")
+        raise Exception(f"Status code: {response.status_code} | {url} is not valid.")
     
     # Extract the filename from the URL
     filename = url.split("/")[-1]
