@@ -31,7 +31,8 @@ def get_pdf_url(row):
         return None
     else:
         if year > 2001:
-            return f"https://www.accessdata.fda.gov/cdrh_docs/pdf{year}/{knumber.lower()}.pdf"
+            year_short = int(year - 2000)
+            return f"https://www.accessdata.fda.gov/cdrh_docs/pdf{year_short}/{knumber.lower()}.pdf"
         else:
             return f"https://www.accessdata.fda.gov/cdrh_docs/pdf/{knumber.lower()}.pdf"
 
@@ -72,6 +73,8 @@ def download_all_pdfs(df):
     not_exist = []
     urls = pdf_url_list(df)
     for i, url in enumerate(tqdm(urls)):
+        if i < 56803:
+            continue
         if url is not None:
             result = download_pdf(url)
             if result == "Not Found":
