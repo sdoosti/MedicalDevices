@@ -73,8 +73,6 @@ def download_all_pdfs(df):
     not_exist = []
     urls = pdf_url_list(df)
     for i, url in enumerate(tqdm(urls)):
-        if i < 56803:
-            continue
         if url is not None:
             result = download_pdf(url)
             if result == "Not Found":
