@@ -83,7 +83,17 @@ def download_all_pdfs(df):
             with open(os.path.join(DATA_PATH, "pma_not_exist.txt"), "w") as f:
                 f.write("\n".join(not_exist))
 
+def redownload_not_found_urls():
+    """
+    This function redownloads the PDF files that were not found in the first run.
+    """
+    with open(os.path.join(DATA_PATH, "pma_not_exist.txt"), "r") as f:
+        urls = f.readlines()
+    urls = [url.strip() for url in urls]
+    for url in tqdm(urls):
+        download_pdf(url[:-4]+"A.pdf", folder_path="pma_pdfs")
 
 if __name__ == "__main__":
     df = read_data()
-    download_all_pdfs(df)            
+    #download_all_pdfs(df)   
+    redownload_not_found_urls()         
