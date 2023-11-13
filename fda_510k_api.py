@@ -2,7 +2,7 @@
 Created at 11/10/2023
 Author: Shahryar Doosti
 
-This module is used to fetch and download the data from FDA website.
+This module is used to fetch and download the 510k documents from FDA website.
 """
 
 import requests
