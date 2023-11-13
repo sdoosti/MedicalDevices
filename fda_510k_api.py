@@ -73,6 +73,8 @@ def download_all_pdfs(df):
     not_exist = []
     urls = pdf_url_list(df)
     for i, url in enumerate(tqdm(urls)):
+        if i <25890:
+            continue
         if url is not None:
             result = download_pdf(url)
             if result == "Not Found":
@@ -85,4 +87,4 @@ def download_all_pdfs(df):
 
 if __name__ == "__main__":
     df = read_data()
-    download_all_pdfs(df)            
+    download_all_pdfs(df)          
