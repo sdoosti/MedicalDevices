@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import datetime
-from fda_api import get_pdf_url
+from fda_510k_api import get_pdf_url
 
 def test_get_pdf_url():
     # Test case 1: KNUMBER does not start with "K"

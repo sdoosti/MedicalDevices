@@ -19,7 +19,7 @@ def read_data(file_name = "pmn96cur.csv"):
     """
     df = pd.read_csv(os.path.join(DATA_PATH,file_name))
     df['date'] = pd.to_datetime(df['DATERECEIVED'], format='%m/%d/%Y')
-    return df
+    return df #df[df.date.dt.year>2001]
 
 def get_pdf_url(row):
     """
@@ -73,13 +73,11 @@ def download_all_pdfs(df):
     not_exist = []
     urls = pdf_url_list(df)
     for i, url in enumerate(tqdm(urls)):
-        if i <25890:
-            continue
         if url is not None:
             result = download_pdf(url)
             if result == "Not Found":
                 not_exist.append(url)
-            sleep(0.5)
+            sleep(1)
         if i % 100 == 0:
             with open(os.path.join(DATA_PATH, "not_exist.txt"), "w") as f:
                 f.write("\n".join(not_exist))
